@@ -15,4 +15,3 @@ codegen-units = 1
 
 [patch.crates-io]
 solana-sbpf = { git = "https://github.com/serbangv/sbpf-profiler" }
-
