@@ -29,8 +29,8 @@ directory.
 
 ### Anchor Flamegraph
 
-<img src="flamegraphs/anchor-flamegraph.png" alt="Anchor Flamegraph" width="500">
+<img src="flamegraphs/anchor-flamegraph.svg" alt="Anchor Flamegraph" width="500">
 
 ### Pinocchio Flamegraph
 
-<img src="flamegraphs/pinocchio-flamegraph.png" alt="Pinocchio Flamegraph" width="500">
+<img src="flamegraphs/pinocchio-flamegraph.svg" alt="Pinocchio Flamegraph" width="500">
