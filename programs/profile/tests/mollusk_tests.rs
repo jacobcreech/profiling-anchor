@@ -1,7 +1,7 @@
 use anchor_lang::prelude::*;
 use mollusk_svm::Mollusk;
 use solana_sdk::{
-    account::{AccountSharedData, WritableAccount},
+    account::Account,
     instruction::{AccountMeta, Instruction},
     pubkey::Pubkey,
     system_program,
@@ -92,41 +92,41 @@ impl ComputeUnits {
     }
 }
 
-fn create_test_account(lamports: u64, data: Vec<u8>, owner: Pubkey) -> AccountSharedData {
-    AccountSharedData::from(solana_sdk::account::Account {
+fn create_test_account(lamports: u64, data: Vec<u8>, owner: Pubkey) -> Account {
+    Account {
         lamports,
         data,
         owner,
         executable: false,
         rent_epoch: 0,
-    })
+    }
 }
 
-fn create_empty_account() -> AccountSharedData {
+fn create_empty_account() -> Account {
     let mut data = vec![0u8; 8];
     data[..8].copy_from_slice(&EMPTY_DISCRIMINATOR);
     create_test_account(1_000_000, data, PROGRAM_ID)
 }
 
-fn create_sized_account() -> AccountSharedData {
+fn create_sized_account() -> Account {
     let mut data = vec![0u8; 8 + 8]; // 8 bytes discriminator + 8 bytes field
     data[..8].copy_from_slice(&SIZED_DISCRIMINATOR);
     create_test_account(1_000_000, data, PROGRAM_ID)
 }
 
-fn create_unsized_account() -> AccountSharedData {
+fn create_unsized_account() -> Account {
     let mut data = vec![0u8; 8 + 4]; // 8 bytes discriminator + 4 bytes Vec length (empty)
     data[..8].copy_from_slice(&UNSIZED_DISCRIMINATOR);
     create_test_account(1_000_000, data, PROGRAM_ID)
 }
 
-fn create_mint_account() -> AccountSharedData {
+fn create_mint_account() -> Account {
     let mut data = vec![0u8; 82]; // SPL Token Mint size
     data[0..4].copy_from_slice(&[1, 0, 0, 0]); // is_initialized = true
     create_test_account(1_000_000, data, anchor_spl::token::ID)
 }
 
-fn create_token_account() -> AccountSharedData {
+fn create_token_account() -> Account {
     let mut data = vec![0u8; 165]; // SPL Token Account size
     data[0..4].copy_from_slice(&[1, 0, 0, 0]); // is_initialized = true
     create_test_account(1_000_000, data, anchor_spl::token::ID)
@@ -159,7 +159,7 @@ mod tests {
             let mut accounts = vec![];
             for _ in 0..count {
                 let pubkey = Pubkey::new_unique();
-                let account = AccountSharedData::new(1_000_000, 0, &system_program::ID);
+                let account = Account::new(1_000_000, 0, &system_program::ID);
                 accounts.push((pubkey, account));
             }
             
@@ -208,16 +208,16 @@ mod tests {
             
             // Payer
             let payer = Pubkey::new_unique();
-            let payer_account = AccountSharedData::new(10_000_000, 0, &system_program::ID);
+            let payer_account = Account::new(10_000_000, 0, &system_program::ID);
             accounts.push((payer, payer_account));
             
             // System program
-            accounts.push((system_program::ID, AccountSharedData::default()));
-            
+            accounts.push((system_program::ID, Account::default()));
+
             // Accounts to initialize
             for _ in 0..count {
                 let pubkey = Pubkey::new_unique();
-                let account = AccountSharedData::new(0, 0, &system_program::ID);
+                let account = Account::new(0, 0, &system_program::ID);
                 accounts.push((pubkey, account));
             }
             
@@ -307,7 +307,7 @@ mod tests {
             let mut accounts = vec![];
             for _ in 0..count {
                 let pubkey = Pubkey::new_unique();
-                let account = AccountSharedData::new(1_000_000, 0, &system_program::ID);
+                let account = Account::new(1_000_000, 0, &system_program::ID);
                 accounts.push((pubkey, account));
             }
             
@@ -354,7 +354,7 @@ mod tests {
             let mut accounts = vec![];
             for _ in 0..count {
                 let pubkey = Pubkey::new_unique();
-                let account = AccountSharedData::new(1_000_000, 0, &system_program::ID);
+                let account = Account::new(1_000_000, 0, &system_program::ID);
                 accounts.push((pubkey, account));
             }
             
@@ -369,7 +369,7 @@ mod tests {
                 accounts: account_metas,
                 data: discriminator.to_vec(),
             };
-            
+
             // Execute
             let result = mollusk.process_instruction(
                 &instruction,
@@ -386,7 +386,7 @@ mod tests {
     fn test_unchecked_account() {
         let mollusk = setup_mollusk();
         let mut compute_units = ComputeUnits::new();
-        
+
         let test_cases = vec![
             (1, UNCHECKED_ACCOUNT1_DISCRIMINATOR),
             (2, UNCHECKED_ACCOUNT2_DISCRIMINATOR),
@@ -401,7 +401,7 @@ mod tests {
             let mut accounts = vec![];
             for _ in 0..count {
                 let pubkey = Pubkey::new_unique();
-                let account = AccountSharedData::new(1_000_000, 0, &system_program::ID);
+                let account = Account::new(1_000_000, 0, &system_program::ID);
                 accounts.push((pubkey, account));
             }
             
@@ -447,7 +447,7 @@ mod tests {
             // Create accounts
             let mut accounts = vec![];
             for _ in 0..count {
-                accounts.push((system_program::ID, AccountSharedData::default()));
+                accounts.push((system_program::ID, Account::default()));
             }
             
             // Create instruction
@@ -492,7 +492,7 @@ mod tests {
             // Create accounts
             let mut accounts = vec![];
             for _ in 0..count {
-                accounts.push((anchor_spl::token::ID, AccountSharedData::default()));
+                accounts.push((anchor_spl::token::ID, Account::default()));
             }
             
             // Create instruction
