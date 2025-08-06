@@ -31,6 +31,23 @@ directory.
 
 <img src="flamegraphs/anchor-flamegraph.svg" alt="Anchor Flamegraph" width="500">
 
+The Anchor program flamegraph has a lot going on. There is significant time
+spent in `entrypoint::deserialize` and serialization before doing the CPI. The 
+`entrypoint::deserialize` takes up 28% of the total compute, and nearly 3x the 
+compute of the entire Pinocchio program.
+
 ### Pinocchio Flamegraph
 
 <img src="flamegraphs/pinocchio-flamegraph.svg" alt="Pinocchio Flamegraph" width="500">
+
+First thing to note with the Pinocchio flamegraph is that there's not much going
+compared to the Anchor flamegraph. This is because the Pinocchio program is
+much simpler and doesn't have as many checks as the Anchor program. Not only
+that, but Pinocchio is just an entrypoint, not a full framework like Anchor. 
+
+### Conclusion
+
+Anchor is a great tool for most to build Solana programs. It's a fully featured
+framework that provides a number of security guarantees out of the box. While
+all of this is true, it still has a ways to go to be optimal performance-wise.
+
