@@ -16,7 +16,7 @@ mod tests {
     use super::*;
 
     fn setup_mollusk() -> Mollusk {
-        Mollusk::new(&PROGRAM_ID, "target/deploy/profile")
+        Mollusk::new(&PROGRAM_ID, "../target/deploy/profile")
     }
 
     #[test]

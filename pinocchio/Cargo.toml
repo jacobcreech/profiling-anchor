@@ -6,7 +6,6 @@ edition = "2021"
 [lib]
 crate-type = ["cdylib", "lib"]
 
-
 [patch.crates-io]
 solana-sbpf = { git = "https://github.com/serbangv/sbpf-profiler" }
 

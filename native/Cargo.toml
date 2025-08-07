@@ -1,0 +1,28 @@
+[package]
+name = "create_account_native"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib", "lib"]
+name = "create_account_native"
+
+[patch.crates-io]
+solana-sbpf = { git = "https://github.com/serbangv/sbpf-profiler" }
+
+[dependencies]
+solana-program = "2.3.0"
+solana-system-interface = "1.0.0"
+solana-sdk-ids = "2.2.1"
+
+[dev-dependencies]
+mollusk-svm = "0.4.1"
+solana-sdk = "2.3.0"
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+
+[profile.release.build-override]
+opt-level = 3
